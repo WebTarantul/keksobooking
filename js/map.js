@@ -18,12 +18,26 @@ mapBlock.classList.remove('map--faded');
 
 
 
-
-function randomInteger(min, max) {
+// случайное число от и до
+function getRandomNumber(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
-  rand = Math.floor(rand);
-  return rand;
+    rand = Math.floor(rand);
+    return rand;
 }
-var u = randomInteger(3,12);
 
-console.log(u);
+// премешивание масива
+function shuffle(arr){
+	var j, temp;
+	for(var i = arr.length - 1; i > 0; i--){
+		j = Math.floor(Math.random()*(i + 1));
+		temp = arr[j];
+		arr[j] = arr[i];
+		arr[i] = temp;
+	}
+	return arr;
+}
+
+// случайная длина масива
+var getRandomLengthArray = function(array){
+  return array.slice(getRandomNumber(0,array.length));
+}
