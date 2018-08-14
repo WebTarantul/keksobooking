@@ -3,6 +3,8 @@ var PIN_MIN_X = 80;
 var PIN_MAX_X = 1100;
 var PIN_MIN_Y = 130;
 var PIN_MAX_Y = 630;
+var PIN_HEIGHT = 70;
+var PIN_WIDTH = 50;
 var PRICE_MIN = 1000;
 var PRICE_MAX = 1000000;
 var TYPES = ['palace', 'flat', 'house', 'bungalo']
@@ -79,8 +81,58 @@ var generateAd = function(countAd){
 return arrayAd;
 };
 
+
 var template =  document.querySelector('template');
-var templateAd = template.cloneNode(true);
+var templateAd = document.querySelector('template').cloneNode(true);
+var templatePhoto = templateAd.querySelector('.popup__photo');
+var templatePin = templateAd.querySelector('.map__pin');
+var adverts = generateAd(adCount);
+
+// Создание списка фотографий в объявлении
+var generetePhotos = function (arrayPhotos) {
+  var fragmentPhotos = document.createDocumentFragment();
+
+  for (var i = 0; i < arrayPhotos.length; i++) {
+    var photoItem = arrayPhotos[i];
+    var newPhoto = templatePhoto.cloneNode(true);
+    newPhoto.src=photoItem;
+    fragmentPhotos.appendChild(newPhoto);
+  }
+  return fragmentPhotos;
+}
+
+// Создает список преимуществ
+var generateFeatures= function(arrayFeatures){
+  var fragmentFeatures = document.createDocumentFragment();
+  for (var i = 0; i < arrayFeatures.length; i++) {
+      var featureElement = document.createElement('li');
+      featureElement.classList.add('popup__feature');
+      featureElement.classList.add('popup__feature--'+arrayFeatures[i]);
+      featureElement.textContent=arrayFeatures[i];
+      fragmentFeatures.appendChild(featureElement);
+  }
+  return fragmentFeatures;
+};
+
+// создает метки на карте
+var generatePins = function(arrayAdverts){
+  var fragmentPin = document.createDocumentFragment();
+  for (var i = 0; i < arrayAdverts.length; i++) {
+    var elementPin = templatePin.cloneNode(true);
+    var avatarPin = elementPin.querySelector('img');
+    elementPin.style.top = (arrayAdverts.location.y - PIN_HEIGHT)+'px;';
+    elementPin.style.left = (arrayAdverts.location.y) - (PIN_WIDTH/2) + 'px;';
+    avatarPin.src = arrayAdverts.author.avatar;
+    fragmentPin.appendChild(elementPin);
+  }
+  return fragmentPin;
+}
+
+// создает карточку обьявления
+var createCardMap = function(arrayAd){
+  var templateCard = template
+}
+
 
 var generateAdElements = function(array){
   var pinButton = templateAd.content.querySelector('.map__pin');
