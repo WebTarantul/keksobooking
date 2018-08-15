@@ -54,8 +54,8 @@ var getRandomLengthArray = function (array) {
 
 // генерирует обьявления
 var generateAd = function (countAd) {
-  arrayAd = [];
-  for (i = 0; i < countAd; i++) {
+  var arrayAd = [];
+  for (var i = 0; i < countAd; i++) {
     var ad = {
       'author': {
         'avatar': 'img/avatars/user' + i + '.png'
@@ -137,6 +137,7 @@ var createCardMap = function (arrayAd) {
   var templateCard = template.content;
   var fragmentCards = document.createDocumentFragment();
   for (var i = 0; i < arrayAd.length; i++) {
+
     var element = arrayAd[i];
     var cardItem = templateCard.cloneNode(true);
     cardItem.querySelector('.popup__title').textContent = element.offer.title;
@@ -144,17 +145,17 @@ var createCardMap = function (arrayAd) {
   }
   return fragmentCards;
 };
-var testCards = createCardMap(adverts);
+var testCards = createCardMap(adverts[0]);
 console.log(testCards);
 
 
-var generateAdElements = function (array) {
-  var pinButton = templateAd.content.querySelector('.map__pin');
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < array.length; i++) {
-    var element = array[i];
-    pinButton.style.left(array.location.x);
-    pinButton.style.right(array.location.y);
-  }
-};
+// var generateAdElements = function (array) {
+//   var pinButton = templateAd.content.querySelector('.map__pin');
+//   var fragment = document.createDocumentFragment();
+//   for (var i = 0; i < array.length; i++) {
+//     var element = array[i];
+//     pinButton.style.left(array.location.x);
+//     pinButton.style.right(array.location.y);
+//   }
+// };
 
