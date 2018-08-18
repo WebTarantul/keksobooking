@@ -1,10 +1,13 @@
+
 'use strict';
 
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+
 var PIN_MIN_X = 80;
 var PIN_MAX_X = 1100;
 var PIN_MIN_Y = 130;
 var PIN_MAX_Y = 630;
+
 var PIN_HEIGHT = 70;
 var PIN_WIDTH = 50;
 var PRICE_MIN = 1000;
@@ -15,6 +18,7 @@ var ROOMS_MAX = 5;
 var ROOMS_MIN = 1;
 var GUESTS_MIN = 1;
 var GUESTS_MAX = 25;
+
 var CHECK = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var BUILDING_TYPES = {
@@ -25,9 +29,9 @@ var BUILDING_TYPES = {
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var adCount = 8;
 
-
 var mapBlock = document.querySelector('.map');
 mapBlock.classList.remove('map--faded');
+
 
 // случайное число от и до
 function getRandomNumber(min, max) {
@@ -168,5 +172,6 @@ var generatePins = function (arrayAdverts) {
 mapBlock.insertBefore(createCardMap(adverts[0]), document.querySelector('.map__filters-container'));
 
 mapBlock.querySelector('.map__pins').appendChild(generatePins(adverts));
+
 
 
