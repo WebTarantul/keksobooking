@@ -26,9 +26,6 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var adCount = 8;
 
 
-var mapBlock = document.querySelector('.map');
-mapBlock.classList.remove('map--faded');
-
 // случайное число от и до
 function getRandomNumber(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
@@ -165,8 +162,6 @@ var generatePins = function (arrayAdverts) {
   return fragmentPins;
 };
 // отрисовка в документе
-mapBlock.insertBefore(createCardMap(adverts[0]), document.querySelector('.map__filters-container'));
-
-mapBlock.querySelector('.map__pins').appendChild(generatePins(adverts));
-
+// mapBlock.insertBefore(createCardMap(adverts[0]), document.querySelector('.map__filters-container'));
+// mapBlock.querySelector('.map__pins').appendChild(generatePins(adverts));
 
