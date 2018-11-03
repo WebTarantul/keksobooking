@@ -74,7 +74,8 @@ var generateAd = function (countAd) {
       'location': {
         'x': getRandomNumber(PIN_MIN_X, PIN_MAX_X),
         'y': getRandomNumber(PIN_MIN_Y, PIN_MAX_Y)
-      }
+      },
+      'data_Ad_count': i
     };
     arrayAd[i] = ad;
   }
@@ -120,6 +121,7 @@ var createPin = function (arrayAdverts) {
   var avatarPin = elementPin.querySelector('img');
   elementPin.style.top = arrayAdverts.location.y - PIN_HEIGHT + 'px';
   elementPin.style.left = arrayAdverts.location.x - (PIN_WIDTH / 2) + 'px';
+  elementPin.setAttribute('data-ad-count', arrayAdverts.data_Ad_count);
 
   avatarPin.src = arrayAdverts.author.avatar;
   avatarPin.alt = arrayAdverts.title;
@@ -129,29 +131,48 @@ var createPin = function (arrayAdverts) {
 
 
 // создает карточку обьявления
-var createCardMap = function (arrayAd) {
+var createCardMap = function (arrayAdverts) {
   var templateCard = template.content;
   var cardItem = templateCard.cloneNode(true);
-  cardItem.querySelector('.popup__title').textContent = arrayAd.offer.title;
-  cardItem.querySelector('.popup__text--address').textContent = arrayAd.offer.address;
-  cardItem.querySelector('.popup__text--price').textContent = arrayAd.offer.price;
-  cardItem.querySelector('.popup__type').textContent = BUILDING_TYPES[arrayAd.offer.type];
-  cardItem.querySelector('.popup__text--capacity').textContent = arrayAd.offer.rooms + ' комнаты для ' + arrayAd.offer.guests + ' гостей';
-  cardItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayAd.offer.checkin + ', выезд до ' + arrayAd.offer.checkout;
+  cardItem.removeChild(cardItem.querySelector('.map__pin'));
+  var cardItemElement = cardItem.querySelector('.map__card');
+  var cardItemCloseButton = cardItemElement.querySelector('.popup__close');
+
+  cardItem.querySelector('.map__card').setAttribute('data-ad-count', arrayAdverts.data_Ad_count);
+  cardItem.querySelector('.popup__title').textContent = arrayAdverts.offer.title;
+  cardItem.querySelector('.popup__text--address').textContent = arrayAdverts.offer.address;
+  cardItem.querySelector('.popup__text--price').textContent = arrayAdverts.offer.price;
+  cardItem.querySelector('.popup__type').textContent = BUILDING_TYPES[arrayAdverts.offer.type];
+  cardItem.querySelector('.popup__text--capacity').textContent = arrayAdverts.offer.rooms + ' комнаты для ' + arrayAdverts.offer.guests + ' гостей';
+  cardItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayAdverts.offer.checkin + ', выезд до ' + arrayAdverts.offer.checkout;
+
+  var closePopup = function () {
+    cardItemElement.classList.add('hidden');
+  };
+
+  var closePopupEsc = function (e) {
+    if (e.keyCode === 27) {
+      closePopup();
+    }
+  };
+
+  cardItemCloseButton.addEventListener('click', closePopup);
+  document.addEventListener('keydown', closePopupEsc);
   while (cardItem.querySelector('.popup__features').firstChild) {
     cardItem.querySelector('.popup__features').removeChild(cardItem.querySelector('.popup__features').firstChild);
   }
-  cardItem.querySelector('.popup__features').appendChild(generateFeatures(arrayAd.offer.features));
-  cardItem.querySelector('.popup__description').textContent = arrayAd.offer.description;
+  cardItem.querySelector('.popup__features').appendChild(generateFeatures(arrayAdverts.offer.features));
+  cardItem.querySelector('.popup__description').textContent = arrayAdverts.offer.description;
   while (cardItem.querySelector('.popup__photos').firstChild) {
     cardItem.querySelector('.popup__photos').removeChild(cardItem.querySelector('.popup__photos').firstChild);
   }
-  cardItem.querySelector('.popup__photos').appendChild(generetePhotos(arrayAd.offer.photos));
-  cardItem.querySelector('.popup__avatar').src = arrayAd.author.avatar;
+  cardItem.querySelector('.popup__photos').appendChild(generetePhotos(arrayAdverts.offer.photos));
+  cardItem.querySelector('.popup__avatar').src = arrayAdverts.author.avatar;
   return cardItem;
 };
 
 
+// генерует метки обьявлений
 var generatePins = function (arrayAdverts) {
   var fragmentPins = document.createDocumentFragment();
 
@@ -161,7 +182,5 @@ var generatePins = function (arrayAdverts) {
   }
   return fragmentPins;
 };
-// отрисовка в документе
-// mapBlock.insertBefore(createCardMap(adverts[0]), document.querySelector('.map__filters-container'));
-// mapBlock.querySelector('.map__pins').appendChild(generatePins(adverts));
+
 
