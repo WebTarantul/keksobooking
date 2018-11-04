@@ -148,6 +148,10 @@ var createCardMap = function (arrayAdverts) {
 
   var closePopup = function () {
     cardItemElement.remove();
+    if(document.querySelectorAll('.map__pin--active').length > 0){
+      document.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    }
+
   };
 
   var closePopupEsc = function (e) {
