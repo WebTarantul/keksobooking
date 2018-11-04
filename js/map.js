@@ -124,7 +124,7 @@ var createPin = function (arrayAdverts) {
   elementPin.setAttribute('data-ad-count', arrayAdverts.data_Ad_count);
 
   avatarPin.src = arrayAdverts.author.avatar;
-  avatarPin.alt = arrayAdverts.title;
+  avatarPin.alt = arrayAdverts.offer.title;
 
   return elementPin;
 };
@@ -147,7 +147,7 @@ var createCardMap = function (arrayAdverts) {
   cardItem.querySelector('.popup__text--time').textContent = 'Заезд после ' + arrayAdverts.offer.checkin + ', выезд до ' + arrayAdverts.offer.checkout;
 
   var closePopup = function () {
-    cardItemElement.classList.add('hidden');
+    cardItemElement.remove();
   };
 
   var closePopupEsc = function (e) {

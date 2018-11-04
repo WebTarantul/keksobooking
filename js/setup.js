@@ -27,26 +27,23 @@ var makeActivePage = function () {
         var currentTarget = evt.currentTarget;
         var currentButtonCount = currentTarget.getAttribute('data-ad-count');
         var allMapCards = document.querySelectorAll('.map__card');
-        for (var j = 0; j < allMapCards.length; j++) {
-          allMapCards[j].classList.add('hidden');
-        }
-        var newMapCardItem = createCardMap(adverts[currentButtonCount]);
-        mapBlock.insertBefore(newMapCardItem, document.querySelector('.map__filters-container'));
         var currentMapCard = document.querySelector('.map__card[data-ad-count="' + currentButtonCount + '"]');
-        var openPopup = function () {
-          currentMapCard.classList.remove('hidden');
-        };
-        var openPopupEnter = function (evt) {
-          if (evt.keyCode === 13) {
-            openPopup();
+        var newMapCardItem = createCardMap(adverts[currentButtonCount]);
+
+        if (currentMapCard) {
+          return
+        } else {
+          for (var j = 0; j < allMapCards.length; j++) {
+            allMapCards[j].remove();
           }
-        };
+          if (document.querySelector('.map__pin--active')) {
+            document.querySelector('.map__pin--active').classList.remove('map__pin--active');
+          }
 
-        currentTarget.addEventListener('click', openPopup);
-        currentTarget.addEventListener('keydown', openPopupEnter);
-
-      },
-      {once: true});
+          currentTarget.classList.add('map__pin--active');
+          mapBlock.insertBefore(newMapCardItem, document.querySelector('.map__filters-container'));
+        }
+      });
     }
   }, 0);
 };
@@ -70,5 +67,3 @@ var getAdress = function () {
 var insertAdress = function () {
   inputAdress.value = getAdress();
 };
-
-
