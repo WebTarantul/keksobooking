@@ -1,8 +1,8 @@
 'use strict';
 
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var PIN_MIN_X = 80;
-var PIN_MAX_X = 1100;
+var PIN_MIN_X = 30;
+var PIN_MAX_X = 1160;
 var PIN_MIN_Y = 130;
 var PIN_MAX_Y = 630;
 var PIN_HEIGHT = 70;
@@ -26,14 +26,14 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var adCount = 8;
 
 
-// случайное число от и до
+// random number min max
 function getRandomNumber(min, max) {
   var rand = min + Math.random() * (max + 1 - min);
   rand = Math.floor(rand);
   return rand;
 }
 
-// премешивание масива
+// array shuffle
 function shuffle(arr) {
   var j, temp;
   for (var i = arr.length - 1; i > 0; i--) {
@@ -45,12 +45,12 @@ function shuffle(arr) {
   return arr;
 }
 
-// случайная длина масива
+// random array length
 var getRandomLengthArray = function (array) {
   return array.slice(getRandomNumber(0, array.length));
 };
 
-// генерирует обьявления
+// generation of advert
 var generateAd = function (countAd) {
   var arrayAd = [];
   for (var i = 0; i < countAd; i++) {
@@ -89,7 +89,7 @@ var templatePhoto = templateAd.querySelector('.popup__photo');
 var templatePin = template.content.querySelector('.map__pin');
 var adverts = generateAd(adCount);
 
-// Создание списка фотографий в объявлении
+// generation of photos list at advert
 var generetePhotos = function (arrayPhotos) {
   var fragmentPhotos = document.createDocumentFragment();
 
@@ -102,7 +102,7 @@ var generetePhotos = function (arrayPhotos) {
   return fragmentPhotos;
 };
 
-// Создает список преимуществ
+// create list of advanteges
 var generateFeatures = function (arrayFeatures) {
   var fragmentFeatures = document.createDocumentFragment();
   for (var i = 0; i < arrayFeatures.length; i++) {
@@ -115,7 +115,7 @@ var generateFeatures = function (arrayFeatures) {
   return fragmentFeatures;
 };
 
-// создает метки на карте
+// create pins on the map
 var createPin = function (arrayAdverts) {
   var elementPin = templatePin.cloneNode(true);
   var avatarPin = elementPin.querySelector('img');
@@ -130,7 +130,7 @@ var createPin = function (arrayAdverts) {
 };
 
 
-// создает карточку обьявления
+// create advert cards
 var createCardMap = function (arrayAdverts) {
   var templateCard = template.content;
   var cardItem = templateCard.cloneNode(true);
@@ -148,7 +148,7 @@ var createCardMap = function (arrayAdverts) {
 
   var closePopup = function () {
     cardItemElement.remove();
-    if(document.querySelectorAll('.map__pin--active').length > 0){
+    if (document.querySelectorAll('.map__pin--active').length > 0) {
       document.querySelector('.map__pin--active').classList.remove('map__pin--active');
     }
 
@@ -176,7 +176,7 @@ var createCardMap = function (arrayAdverts) {
 };
 
 
-// генерует метки обьявлений
+// genaration pins of adverts
 var generatePins = function (arrayAdverts) {
   var fragmentPins = document.createDocumentFragment();
 
@@ -186,5 +186,73 @@ var generatePins = function (arrayAdverts) {
   }
   return fragmentPins;
 };
+
+// activision makeActivePage
+var mainPin = document.querySelector('.map__pin--main');
+
+mainPin.addEventListener('mouseup', makeActivePage);
+var pinsAdded = false;
+mainPin.addEventListener('mouseup', function () {
+  if (!pinsAdded) {
+    mapBlock.querySelector('.map__pins').appendChild(generatePins(adverts));
+    pinsAdded = true;
+  }
+});
+
+// get adress from pin
+var getAdress = function () {
+  var x = mainPin.style.left;
+  var y = mainPin.style.top;
+  var resX = +(x.replace('px', '')) + (PIN_WIDTH / 2);
+  var resY = +(y.replace('px', '')) + (PIN_HEIGHT);
+  return resX + ', ' + resY;
+};
+
+// insert adress to input
+var insertAdress = function () {
+  inputAdress.value = getAdress();
+};
+
+// drag and drop functionality
+var onMouseDown = function (e) {
+  e.preventDefault();
+
+  var startDragCoocrdinates = {};
+  startDragCoocrdinates.y = e.clientY;
+  startDragCoocrdinates.x = e.clientX;
+  document.addEventListener('mousemove', onMouseMove);
+
+  function onMouseMove(evtMove) {
+    evtMove.preventDefault();
+    var shift = {};
+    shift.y = startDragCoocrdinates.y - evtMove.clientY;
+    shift.x = startDragCoocrdinates.x - evtMove.clientX;
+    startDragCoocrdinates = {
+      x: evtMove.clientX,
+      y: evtMove.clientY
+    };
+    var finishCoordinateX = (mainPin.offsetLeft - shift.x);
+    var finishCoordinateY = (mainPin.offsetTop - shift.y);
+
+    var isValidCoordinatesX = finishCoordinateX + (PIN_WIDTH / 2) <= PIN_MAX_X && finishCoordinateX + (PIN_WIDTH / 2) >= PIN_MIN_X;
+    var isValidCoordinatesY = finishCoordinateY + (PIN_HEIGHT / 2) <= PIN_MAX_Y && finishCoordinateY + (PIN_HEIGHT / 2) >= PIN_MIN_Y;
+
+    if (isValidCoordinatesX) {
+      mainPin.style.left = mainPin.offsetLeft - shift.x + 'px';
+    }
+    if (isValidCoordinatesY) {
+      mainPin.style.top = mainPin.offsetTop - shift.y + 'px';
+    }
+
+
+  }
+  function onMouseUp(eUp) {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+  document.addEventListener('mouseup', onMouseUp);
+};
+
+mainPin.addEventListener('mousedown', onMouseDown);
 
 

@@ -1,7 +1,6 @@
 'use strict';
 var adFormElements = document.querySelectorAll('.ad-form__element');
 var adForm = document.querySelector('.ad-form');
-var mainPin = document.querySelector('.map__pin--main');
 var mapBlock = document.querySelector('.map');
 var inputAdress = document.querySelector('#address');
 
@@ -48,22 +47,4 @@ var makeActivePage = function () {
   }, 0);
 };
 
-mainPin.addEventListener('mouseup', makeActivePage);
-var pinsAdded = false;
-mainPin.addEventListener('mouseup', function () {
-  mapBlock.querySelector('.map__pins').appendChild(generatePins(adverts));
-  pinsAdded = true;
-});
 
-// NOTE get adress from pin
-var getAdress = function () {
-  var x = mainPin.style.left;
-  var y = mainPin.style.top;
-  var resX = +(x.replace('px', '')) + (PIN_WIDTH / 2);
-  var resY = +(y.replace('px', '')) + (PIN_HEIGHT);
-  return resX + ', ' + resY;
-};
-// NOTE insert adress to input
-var insertAdress = function () {
-  inputAdress.value = getAdress();
-};
