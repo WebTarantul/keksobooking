@@ -1,5 +1,5 @@
 'use strict';
-function adFormInit() {
+(function adFormInit() {
   var formType = document.querySelector('#type');
   var formPrice = document.querySelector('#price');
   var formAdress = document.querySelector('#address');
@@ -53,7 +53,4 @@ function adFormInit() {
     });
   };
   formNumberOfRooms.addEventListener('change', onChangeNumberOfRooms);
-}
-
-
-adFormInit();
+})();
