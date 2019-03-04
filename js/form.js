@@ -1,5 +1,7 @@
 'use strict';
 (function adFormInit() {
+  var adForm = document.querySelector('.ad-form');
+  var adFormElements = document.querySelectorAll('.ad-form__element');
   var formType = document.querySelector('#type');
   var formPrice = document.querySelector('#price');
   var formAdress = document.querySelector('#address');
@@ -53,4 +55,11 @@
     });
   };
   formNumberOfRooms.addEventListener('change', onChangeNumberOfRooms);
+  window.form = {};
+  window.form.adFormReset = function () {
+    adForm.reset();
+    adFormElements.forEach(function (el) {
+      el.setAttribute('disabled', 'disabled');
+    });
+  };
 })();

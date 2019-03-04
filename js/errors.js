@@ -13,7 +13,7 @@
     div.style.color = 'white';
     div.style.textAlign = 'center';
     div.textContent = errorMessage;
-    div.classList.add('error-message')
+    div.classList.add('error-message');
     return div;
   }
 
@@ -26,10 +26,10 @@
     setTimeout(function () {
       var div = document.querySelector('.error-message');
       div.remove();
-    },8000)
+    }, 8000);
   }
   window.errors = {
     show: onError
-  }
+  };
 })();
 

@@ -52,7 +52,7 @@
           onLoad(xhr.response);
           break;
         case STATUS_CODES[statusKey]:
-          onError('Код ошибки: ' + STATUS_CODES[statusKey] + " " + STATUS_ANSWER[statusKey]);
+          onError('Код ошибки: ' + STATUS_CODES[statusKey] + ' ' + STATUS_ANSWER[statusKey]);
           break;
         default:
           onError(xhr.status, xhr.statusText);

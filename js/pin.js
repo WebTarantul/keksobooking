@@ -3,6 +3,8 @@
 (function () {
   var PIN_HEIGHT = 70;
   var PIN_WIDTH = 50;
+  var MAIN_PIN_START_X = 570;
+  var MAIN_PIN_START_Y = 375;
   var mainPin = document.querySelector('.map__pin--main');
 
   // create pins on the map
@@ -40,6 +42,26 @@
     }
     return fragmentPins;
   };
-  window.generatePins = generatePins;
-  window.getAdress = getAdress;
+
+  // remove pins
+  function removePins() {
+    var allPins = document.querySelectorAll('.map__pin');
+    allPins.forEach(function (el) {
+      if (el.classList.contains('map__pin--main')) {
+        return;
+      }
+      el.remove();
+    });
+  }
+
+  // reset mainPin position
+  function resetMainPinPosition() {
+    mainPin.style.left = MAIN_PIN_START_X + 'px';
+    mainPin.style.top = MAIN_PIN_START_Y + 'px';
+  }
+  window.pins = {};
+  window.pins.generatePins = generatePins;
+  window.pins.getAdress = getAdress;
+  window.pins.removePins = removePins;
+  window.pins.resetMainPinPosition = resetMainPinPosition;
 })();

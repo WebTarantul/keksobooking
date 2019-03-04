@@ -16,7 +16,6 @@
     bungalo: 'Дом'
   };
   var template = document.querySelector('template');
-  // var templateAd = template.content.querySelector('.map__card');
 
   var adverts;
 
@@ -81,10 +80,11 @@ function addDataCountOfArray (array) {
 
   // insert adress to input
   var insertAdress = function () {
-    inputAdress.value = window.getAdress();
+    inputAdress.value = window.pins.getAdress();
   };
 
   // drag and drop functionality
+  var activePage;
   var mainPin = document.querySelector('.map__pin--main');
   var onMouseDown = function (e) {
     e.preventDefault();
@@ -118,16 +118,16 @@ function addDataCountOfArray (array) {
 
     }
     document.addEventListener('mouseup', onMouseUp);
-    var activePage = false;
+
 
     function onMouseUp(eUp) {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       // activision makeActivePage
       if (!activePage) {
-        mapBlock.querySelector('.map__pins').appendChild(window.generatePins(adverts));
-        makeActivePage();
+        mapBlock.querySelector('.map__pins').appendChild(window.pins.generatePins(adverts));
         activePage = true;
+        makeActivePage();
       }
 
     }
@@ -138,6 +138,7 @@ function addDataCountOfArray (array) {
 
   var adFormElements = document.querySelectorAll('.ad-form__element');
   var adForm = document.querySelector('.ad-form');
+  var adFormButton = document.querySelector('.ad-form__submit');
   var mapBlock = document.querySelector('.map');
   var inputAdress = document.querySelector('#address');
 
@@ -147,6 +148,7 @@ function addDataCountOfArray (array) {
   }
 
   var makeActivePage = function () {
+    var resetButton = document.querySelector('.ad-form__reset');
     for (var i = 0; i < adFormElements.length; i++) {
       var adFormElement = adFormElements[i];
       adFormElement.removeAttribute('disabled');
@@ -182,5 +184,41 @@ function addDataCountOfArray (array) {
         });
       }
     }, 0);
+    resetButton.addEventListener('click', function (){
+      window.pageReset();
+
+    });
   };
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var adFormData = new FormData(adForm);
+    window.backend.upload(adFormData,onSuccess,onError);
+
+    // successful send
+    function onSuccess () {
+      var successMessageBlock = document.querySelector('.success');
+      successMessageBlock.classList.remove('hidden');
+      setTimeout(function () {
+        successMessageBlock.classList.add('hidden');
+        window.pageReset();
+      }, 3000);
+
+
+    };
+    // error send
+    function onError (message) {
+      window.errors.show(message);
+  };
+
+  });
+  function pageReset () {
+    activePage = false;
+    adForm.classList.add('ad-form--disabled');
+    mapBlock.classList.add('map--faded');
+    window.form.adFormReset();
+    window.pins.removePins();
+    window.pins.resetMainPinPosition();
+    scrollTo(0,0);
+  }
+  window.pageReset = pageReset;
 })();
