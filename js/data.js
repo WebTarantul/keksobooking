@@ -18,8 +18,6 @@
   var PRICE_MIN = 1000;
   var PRICE_MAX = 1000000;
 
-
-
   // random number min max
   function getRandomNumber(min, max) {
     var rand = min + Math.random() * (max + 1 - min);
@@ -29,6 +27,7 @@
 
   // array shuffle
   function shuffle(arr) {
+    // eslint-disable-next-line one-var
     var j, temp;
     for (var i = arr.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));

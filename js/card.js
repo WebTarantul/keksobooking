@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 (function () {
   // generation of photos list at advert
   var template = document.querySelector('template');

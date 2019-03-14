@@ -192,6 +192,7 @@ function addDataCountOfArray (array) {
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     var adFormData = new FormData(adForm);
+    window.adFormData = adFormData;
     window.backend.upload(adFormData,onSuccess,onError);
 
     // successful send

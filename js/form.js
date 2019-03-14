@@ -51,6 +51,7 @@
     formNumberOfGuests.options.forEach(function (el) {
       var selectedNumberOfRooms = formNumberOfRooms.value;
       el.disabled = VALID_NUMBER_OF_GUESTS[selectedNumberOfRooms].indexOf(el.value) === -1;
+      // eslint-disable-next-line eqeqeq
       el.selected = VALID_NUMBER_OF_GUESTS[selectedNumberOfRooms][VALID_NUMBER_OF_GUESTS[selectedNumberOfRooms].length - 1] == el.value;
     });
   };

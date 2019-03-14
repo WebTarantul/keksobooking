@@ -42,7 +42,7 @@
       for (var key in STATUS_CODES) {
         if (STATUS_CODES.hasOwnProperty(key)) {
           var element = STATUS_CODES[key];
-          if (xhr.status == element) {
+          if (xhr.status === element) {
             var statusKey = key;
           }
         }
