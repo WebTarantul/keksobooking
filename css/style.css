@@ -224,6 +224,7 @@ fieldset {
 .map__pin--main {
   width: 65px;
   height: 65px;
+  z-index: 10;
 
   cursor: move;
 }
@@ -574,6 +575,11 @@ fieldset {
   border-radius: 5px;
 
   cursor: pointer;
+  transition: all .3s;
+}
+[class*="drop-zone"].drag{
+  background: #ff5635;
+  color: #fff;
 }
 
 .ad-form-header__drop-zone:hover {
@@ -822,6 +828,7 @@ fieldset {
 
   background-color: #e4e4de;
   border-radius: 5px;
+  overflow: hidden;
 }
 
 .ad-form__element--submit {
