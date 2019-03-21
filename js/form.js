@@ -56,11 +56,77 @@
     });
   };
   formNumberOfRooms.addEventListener('change', onChangeNumberOfRooms);
-  window.form = {};
-  window.form.adFormReset = function () {
+
+  var dropZoneAvatar = document.querySelector('.ad-form-header__drop-zone');
+  var inputAvatar = document.querySelector('#avatar');
+  var dropZonePhoto = document.querySelector('.ad-form__drop-zone');
+  var inputPhoto = document.querySelector('#images');
+  function dragDropFileInit() {
+
+    window.setDragDropFile(dropZoneAvatar, inputAvatar, function (files) {
+      var avatarField = document.querySelector('.ad-form-header__preview');
+      var img = avatarField.querySelector('img');
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        img.src = reader.result;
+        img.removeAttribute('height');
+      });
+      reader.readAsDataURL(files[0]);
+    });
+    var countAdFormPhoto = -1;
+    window.setDragDropFile(dropZonePhoto, inputPhoto, function (files) {
+      var MAX_QUANTITY = 10;
+      var uploadContainer = document.querySelector('.ad-form__photo-container');
+      var adFormPhoto = document.querySelector('.ad-form__photo');
+      if (countAdFormPhoto < 0) {
+        adFormPhoto.remove();
+        countAdFormPhoto++;
+      }
+      files.forEach(function (image) {
+        if (countAdFormPhoto >= MAX_QUANTITY) {
+          return;
+        }
+        var imgField = document.createElement('div');
+        var img = new Image(70);
+        imgField.classList.add('ad-form__photo');
+        var reader = new FileReader();
+        reader.addEventListener('load', function () {
+          img.src = reader.result;
+          imgField.appendChild(img);
+          uploadContainer.insertAdjacentElement('beforeend', imgField);
+          countAdFormPhoto++;
+        });
+        files.splice();
+        reader.readAsDataURL(image);
+      });
+    });
+  }
+
+  function adFormReset() {
     adForm.reset();
     adFormElements.forEach(function (el) {
       el.setAttribute('disabled', 'disabled');
     });
-  };
+
+    window.resetDragDropFile(function () {
+      var adFormAvatar = document.querySelector('.ad-form-header__preview img');
+      adFormAvatar.src = 'img/muffin-grey.svg';
+      adFormAvatar.setAttribute('height', '44');
+    });
+    window.resetDragDropFile(function () {
+      var uploadContainer = document.querySelector('.ad-form__photo-container');
+      var adFormPhoto = document.querySelector('.ad-form__photo');
+      while (adFormPhoto) {
+        adFormPhoto.remove();
+        adFormPhoto = document.querySelector('.ad-form__photo');
+      }
+      var imgField = document.createElement('div');
+      imgField.classList.add('ad-form__photo');
+      uploadContainer.insertAdjacentElement('beforeend', imgField);
+    });
+  }
+
+  window.form = {};
+  window.form.adFormReset = adFormReset;
+  window.form.dragDropFileInit = dragDropFileInit;
 })();

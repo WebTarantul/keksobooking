@@ -20,6 +20,7 @@
   function addDataCountOfArray(array) {
     for (var i = 0; i < array.length; i++) {
       var el = array[i];
+      // eslint-disable-next-line camelcase
       el.data_Ad_count = i.toString();
     }
   }
@@ -109,6 +110,7 @@
         pinItem.addEventListener('click', onClickPin);
       });
     }, 0);
+    window.form.dragDropFileInit();
     resetButton.addEventListener('click', function () {
       window.pageReset();
     });
